@@ -1,0 +1,47 @@
+version: "3.7"
+
+services:
+  redis:
+    image: redis:5-alpine
+    environment:
+      TZ: "Asia/Shanghai"
+
+  celery-worker:
+    build:
+      context: .
+      target: celery
+    env_file:
+      - environments/mysql
+      - environments/wework
+      - environments/sentry
+    links:
+      - redis
+    command: /usr/local/bin/celery worker --app=pytest_backend --pidfile=/var/run/celery-worker.pid --logfile=/var/log/celery-worker.log --loglevel=INFO
+
+  celery-beat:
+    build:
+      context: .
+      target: celery
+    env_file:
+      - environments/mysql
+      - environments/wework
+      - environments/sentry
+    links:
+      - redis
+    command: /usr/local/bin/celery beat --app=pytest_backend --pidfile=/var/run/celery-beat.pid --logfile=/var/log/celery-beat.log --loglevel=INFO
+
+  django:
+    build:
+      context: .
+      target: django
+    ports:
+      - 9001:8000
+    env_file:
+      - environments/mysql
+      - environments/wework
+      - environments/sentry
+    links:
+      - celery-worker
+      - celery-beat
+
+# 暂时没找到secrets比环境变量更好的地方，所以敏感数据还是存在环境变量中

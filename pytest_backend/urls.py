@@ -1,0 +1,29 @@
+"""pytest_backend URL Configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/2.1/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+import debug_toolbar
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('wework/', include('wework.urls')),
+    # path('api-auth/', include('rest_framework.urls')),
+    # path('__debug__/', include(debug_toolbar.urls)),
+]
+
+# https://github.com/jazzband/django-debug-toolbar/issues/1035
+# TODO:为了解决测试时异常：NoReverseMatch: u'djdt' is not a registered namespace，这里直接把`__debug__/`配置到URL中了
+#  正式发布时需要注释掉

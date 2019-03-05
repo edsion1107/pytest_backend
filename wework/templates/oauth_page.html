@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+
+</head>
+{% if auto_close %}
+    <body onload="window.setTimeout(window.close(),3000)">
+{% else %}
+    <body>
+{% endif %}
+<h1>{% now "DATETIME_FORMAT" %}</h1>
+<h2>{{ reason }}</h2>
+
+</body>
+</html>

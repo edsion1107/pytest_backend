@@ -1,0 +1,12 @@
+[run]
+omit =
+    *apps.py,
+    *migrations/*.py
+    *tests/*
+    *urls.py
+    *wsgi.py
+    *settings.py
+    manage.py
+    gunicorn_conf.py
+    *celery.py
+    *tasks.py
