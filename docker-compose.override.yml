@@ -2,10 +2,12 @@ version: "3.7"
 
 services:
   celery-worker:
+    command: /usr/local/bin/celery worker --app=pytest_backend --loglevel=DEBUG
     volumes:
       - .:/app
 
   celery-beat:
+    command: /usr/local/bin/celery beat --app=pytest_backend --loglevel=DEBUG
     volumes:
       - .:/app
 
