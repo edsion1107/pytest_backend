@@ -31,7 +31,8 @@ def qr_connect(request: Request) -> Response or HttpResponseRedirect:
     """扫码授权登录"""
     auth_code = request.query_params.get('code')
     if auth_code:
-        assert request.GET.get('state')
+        if not request.query_params.get('state'):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         # TODO:与网页授权不同，肯定能拿到用户？（未认证企业，微信扫码强制跳转企业微信）
         username = get_or_create_user.delay(auth_code).get()
         if request.query_params.get('cancel'):  # 因为要验证身份才能取消授权，所以不在redirect前执行
@@ -64,7 +65,8 @@ def oauth2(request: Request) -> Response or HttpResponseRedirect:
     # TODO:认证企业，如果获取到的user是OpenID（微信中打开链接），是否可以换取UserID，或者推送消息？
     auth_code = request.query_params.get('code')
     if auth_code:
-        assert request.query_params.get('state')
+        if not request.query_params.get('state'):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         username = get_or_create_user.delay(auth_code).get()
         if not username:
             return render(request, 'oauth_page.html',
