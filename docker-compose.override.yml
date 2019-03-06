@@ -2,20 +2,14 @@ version: "3.7"
 
 services:
   celery-worker:
-    env_file:
-      - environments/mysql_public
     volumes:
       - .:/app
 
   celery-beat:
-    env_file:
-      - environments/mysql_public
     volumes:
       - .:/app
 
   django:
-    env_file:
-      - environments/mysql_public
     command: ["pytest"]   # 通过 pycharm 运行的也是 runserver 命令
     volumes:
       - .:/app
