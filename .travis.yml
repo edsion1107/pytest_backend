@@ -6,6 +6,7 @@ services:
 env:
   - DOCKER_COMPOSE_VERSION=1.23.2
 before_install:
+  - curl https://myip.ipip.net
   - openssl aes-256-cbc -K $encrypted_bf1cd32e62a9_key -iv $encrypted_bf1cd32e62a9_iv
     -in secrets.tar.enc -out secrets.tar -d
   - tar xvf secrets.tar
