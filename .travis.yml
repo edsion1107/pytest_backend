@@ -1,0 +1,10 @@
+sudo: false
+
+git:
+  depth: 3
+
+install:
+  - docker-compose build
+
+script:
+  - docker-compose up --build --exit-code-from=django
